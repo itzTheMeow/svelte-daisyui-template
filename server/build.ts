@@ -1,10 +1,10 @@
-import fs from "fs";
-import esbuild from "esbuild";
-import esbuildSvelte from "esbuild-svelte";
-import sveltePreprocess from "svelte-preprocess";
-import postCssPlugin from "esbuild-style-plugin";
-import useTailwind from "tailwindcss";
 import useAutoprefixer from "autoprefixer";
+import esbuild from "esbuild";
+import postCssPlugin from "esbuild-style-plugin";
+import esbuildSvelte from "esbuild-svelte";
+import fs from "fs";
+import sveltePreprocess from "svelte-preprocess";
+import useTailwind from "tailwindcss";
 import { init } from "./server";
 
 console.log("Building client...");
@@ -22,6 +22,7 @@ esbuild
     watch: process.argv.includes(`--watch`),
     plugins: [
       esbuildSvelte({
+        filterWarnings: (w) => !w.code.startsWith("a11y-"),
         preprocess: sveltePreprocess(),
       }),
       postCssPlugin({
